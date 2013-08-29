@@ -1,0 +1,544 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'gallerygen.ui'
+#
+# Created: Sat Jan 3 13:31:06 2009
+#      by: The PyQt User Interface Compiler (pyuic) 3.16
+#
+# WARNING! All changes made in this file will be lost!
+
+import sys
+import os
+import Image
+
+from lib         import gallerygen
+from qt          import *
+from cStringIO   import StringIO
+
+image0_data = \
+    "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a\x00\x00\x00\x0d" \
+    "\x49\x48\x44\x52\x00\x00\x00\x12\x00\x00\x00\x12" \
+    "\x08\x06\x00\x00\x00\x56\xce\x8e\x57\x00\x00\x02" \
+    "\x51\x49\x44\x41\x54\x38\x8d\x7d\x94\x4d\x48\x54" \
+    "\x51\x18\x86\x9f\x6f\x1c\xcd\x91\xd4\x7e\x84\x0c" \
+    "\xac\x55\xbb\x6a\x82\xb8\x35\x23\xb4\x74\x53\x94" \
+    "\x5a\x10\x36\x62\xab\x82\xa0\x65\xd0\xa6\xcd\x04" \
+    "\x05\x51\x9b\xb6\x05\x2d\x04\xc5\xa8\x45\x36\x95" \
+    "\x68\x91\x05\xfd\x80\xe6\xa5\x16\x6a\x9b\xda\x35" \
+    "\xcd\x64\x04\x33\x4d\xa0\x39\x7a\xcf\xd7\xe2\xfe" \
+    "\x38\x73\x67\xe8\x85\xc3\x39\x9c\x7b\xee\xc3\xf3" \
+    "\x9d\x7b\xee\x11\xbc\x5c\xff\xd5\xb9\xc9\x1f\x97" \
+    "\xd8\xc8\xcd\xed\xf9\x55\x00\x11\xd1\xbb\xbf\x3a" \
+    "\x9b\x2f\x74\xfc\xf8\x4b\x75\x84\x7a\x89\x25\x52" \
+    "\x1a\x4b\xa4\x14\xe8\x52\x55\xfc\x06\x68\xa8\x55" \
+    "\xce\x55\xd3\x62\x89\x94\x9e\x1c\xec\x47\x80\x47" \
+    "\x63\x8f\x01\x58\x9e\x19\x13\xdf\xc8\x5f\xa7\xaa" \
+    "\xfe\x9c\x0f\x23\x1a\x36\x72\x8c\x22\x40\x7f\xaa" \
+    "\x0f\x01\x5a\x92\x83\xea\xc3\x82\x5a\x44\x54\x55" \
+    "\x45\x55\x11\x97\xa6\x01\x28\x96\x48\xe9\xd1\xd3" \
+    "\xbd\x18\x55\x04\x41\x42\xba\xbe\x45\x38\x1e\xac" \
+    "\xd6\xc8\x18\x10\x51\x44\x41\x04\x7a\x07\xfa\x68" \
+    "\x49\x0e\x6a\x65\x99\x7e\x59\x1e\x44\x71\x97\xba" \
+    "\x36\x3d\xa7\x4e\x20\x02\x11\x71\x17\x89\xf7\x74" \
+    "\xa3\x17\x9e\x3e\xc8\x10\x06\xfa\xd0\xc0\xc8\x51" \
+    "\xd7\xc2\x88\xd0\x20\x1a\xbc\xec\x97\x28\x28\xc7" \
+    "\x07\x7a\x11\xa4\x66\xdf\x54\x95\x88\x65\x59\x7a" \
+    "\x70\xcf\x0e\x7e\xcf\xcf\xe1\x28\x18\xa3\xac\x1b" \
+    "\xc5\x78\x63\xa3\xea\xf5\x6e\xd9\x46\x95\x7a\x89" \
+    "\x02\xbc\xbc\x77\x83\x72\xb9\xcc\xb1\x8b\x69\x00" \
+    "\x5a\xf7\x59\x18\x07\x1a\x22\xd5\x46\x02\x7c\x7a" \
+    "\xf7\x81\xd5\xec\x7c\x0d\x28\x02\xe0\x38\x0e\xc6" \
+    "\x18\xc6\x6f\x5f\xe1\xe1\xad\xcb\xfc\x59\xb0\x29" \
+    "\x2d\xcc\xb1\xba\x6e\x2a\xac\xc0\x28\xfc\xcc\x2f" \
+    "\x91\x38\x73\x36\xf8\x00\xc1\x3e\x59\x96\xa5\xd3" \
+    "\xd3\xd3\xac\xad\xad\xd5\xb4\x73\xd7\xee\x00\xd0" \
+    "\xbe\xff\x10\x02\xbc\x1a\x7f\x46\xbc\x3b\x4e\xac" \
+    "\x75\x2b\xd1\xc6\x66\xde\x4f\x3c\xdf\x38\xb0\x40" \
+    "\x97\x65\x59\xdf\x00\x32\x99\x0c\xe5\x72\x39\x00" \
+    "\x01\xe4\x72\x39\xae\x0e\x4f\x00\xf0\xf1\xeb\x12" \
+    "\x87\x7b\x8e\xd0\x14\xdb\xcc\xec\x8b\xd7\x94\xde" \
+    "\x0c\x9f\x07\x16\x55\x75\x46\x80\x36\xa0\x0b\xd8" \
+    "\x65\x59\xd6\x14\xc0\xe8\xe8\x28\x8e\xe3\x50\x28" \
+    "\x14\xc8\xe7\xf3\xe4\x72\x39\x46\x46\x46\x20\xd9" \
+    "\xcf\xb6\x9d\xbb\x79\xfb\x64\x92\x95\xd9\xfb\x97" \
+    "\x80\x2c\xb0\x08\x64\xa3\xb8\x3f\x7b\x16\x28\xd9" \
+    "\xb6\xdd\x0d\xb4\x0f\x0d\x0d\x4d\x01\xa4\xd3\x69" \
+    "\x0a\x85\x02\xc5\x62\xd1\x2d\xb1\xa3\xb3\x2e\x04" \
+    "\x28\x85\x8f\x7d\x5b\x85\x61\xbb\x6f\x98\x4c\x26" \
+    "\xf9\x5e\x5c\x61\xea\xcb\x72\x5d\x88\xbf\x47\xf5" \
+    "\x12\x00\x1b\x9b\x9a\xb6\x1c\x88\xc7\x27\x01\x6c" \
+    "\xdb\xae\x0b\xf9\x1f\x28\x0c\xdc\xeb\x59\xe2\x41" \
+    "\x3e\x53\x7d\xff\xf1\x0f\xd8\xd3\x37\x85\xe9\x0c" \
+    "\x91\x83\x00\x00\x00\x00\x49\x45\x4e\x44\xae\x42" \
+    "\x60\x82"
+image1_data = \
+    "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a\x00\x00\x00\x0d" \
+    "\x49\x48\x44\x52\x00\x00\x00\x12\x00\x00\x00\x12" \
+    "\x08\x06\x00\x00\x00\x56\xce\x8e\x57\x00\x00\x01" \
+    "\xd0\x49\x44\x41\x54\x38\x8d\xad\x93\x31\x8b\x13" \
+    "\x41\x14\xc7\x7f\xbb\x0a\xd7\x05\x6c\x6c\x32\x07" \
+    "\x29\x4e\x02\x87\x20\xa4\x09\x1e\x88\x8b\x58\xc8" \
+    "\x29\xb9\xb3\xd6\x3e\xb5\x22\x84\xec\x17\xc8\x37" \
+    "\x49\xa9\x55\x3a\x51\xc4\x6f\x90\xa0\x55\x84\xd3" \
+    "\xec\x59\x44\x39\xb9\xc5\x9d\x24\xe7\xce\x7b\x16" \
+    "\x97\x09\x31\x1b\x13\x0b\xff\xf0\xd8\xb7\xf3\xe6" \
+    "\xfd\xe7\xb7\xb3\xbc\xa0\x16\xdc\x06\xe0\xe8\xe4" \
+    "\xf3\x8e\xa2\x04\x84\xa4\x08\x01\x21\x8a\x30\xae" \
+    "\x1c\xce\x3e\x31\xe4\xe9\xc9\x70\x47\x10\x42\x42" \
+    "\xce\x11\x42\xae\x20\x08\xdf\x2a\x4f\x66\x21\x10" \
+    "\x78\xa3\x71\x79\xa4\x00\x7b\x7b\x7b\x6c\xd2\x70" \
+    "\x38\x04\xe0\x34\x39\xdd\x05\xd2\x67\xc1\x8b\x34" \
+    "\xf4\x45\x63\x8c\x76\x3a\x1d\x8d\xa2\x48\x55\x55" \
+    "\x5d\x7e\xa1\xf9\xcc\xea\x2f\x9b\xea\xc5\xcf\x33" \
+    "\x9d\x9d\x8f\x75\x7a\xf6\x55\x27\xdf\xbf\x68\x14" \
+    "\x45\xda\x6a\xb5\xd4\x18\xa3\xc0\x3e\x50\x02\xb8" \
+    "\xba\x7a\xa2\x8a\xe3\xe5\xdb\xd7\xbc\x19\xff\xf8" \
+    "\x63\xfd\xde\xf5\x6b\x3c\xbc\xb5\x0f\x40\x9e\xe7" \
+    "\x7e\x79\x17\x48\x81\x74\x61\xe4\x8b\x2a\x8e\xc7" \
+    "\x77\xee\x72\x2c\x39\xea\xe6\xb1\x94\x03\x38\xe7" \
+    "\x7c\x5b\xa9\x40\xe4\x8b\x2a\xc2\xab\xf7\xef\xd6" \
+    "\x12\x1d\xde\xbc\xb1\x6a\xb4\x50\x81\x08\x75\x1c" \
+    "\x1f\x1c\x70\x34\x27\x91\x15\xaa\x95\x4f\x2b\x1a" \
+    "\x39\xe7\xa8\xd7\xeb\xdc\x7f\xf0\xa8\xb0\x69\x59" \
+    "\xd5\x6a\x75\x3b\x91\x88\x50\xab\xd5\x10\x11\x44" \
+    "\x04\x55\x5d\xe4\xfe\xdd\x39\x87\x88\x6c\x26\xf2" \
+    "\x0d\xfd\x7e\xff\xaf\x44\x95\x4a\x05\x55\xdd\x4c" \
+    "\xa4\xaa\x0c\x06\x03\xba\xdd\x2e\x59\x96\x61\xad" \
+    "\xc5\x5a\x4b\xbb\xdd\xa6\xd1\x68\xe0\x9c\xa3\xd7" \
+    "\xeb\x51\x2e\x97\xb7\x13\x01\x64\x59\x46\xb3\xd9" \
+    "\x04\x20\x8e\x63\x00\x26\x93\xc9\xa2\xbe\xf5\x8e" \
+    "\x3c\xb2\xb5\x16\xb8\x1c\x17\x9f\x4f\xa7\xd3\x85" \
+    "\xd1\xd6\xbf\xe6\x37\x5a\x6b\x89\xe3\x18\x6b\x2d" \
+    "\x59\x96\x15\x8c\xd6\xdd\x51\x30\x7f\x1a\x63\xcc" \
+    "\xc8\x2f\xae\x0e\xae\x1f\xd4\x65\x25\x49\xf2\x1c" \
+    "\xf8\x08\x7c\x00\x12\x6f\x54\x02\x0c\x97\xb3\x53" \
+    "\x2a\x74\xad\x57\x0a\x8c\x80\x04\x48\x83\xa5\x42" \
+    "\x69\x29\xfe\xd5\xc8\xc7\xff\xd3\x6f\x90\xc5\x44" \
+    "\x58\x30\x0c\x2f\xb0\x00\x00\x00\x00\x49\x45\x4e" \
+    "\x44\xae\x42\x60\x82"
+image2_data = \
+    "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a\x00\x00\x00\x0d" \
+    "\x49\x48\x44\x52\x00\x00\x00\x10\x00\x00\x00\x10" \
+    "\x08\x06\x00\x00\x00\x1f\xf3\xff\x61\x00\x00\x02" \
+    "\x6f\x49\x44\x41\x54\x38\x8d\x65\x92\xbd\x4b\xec" \
+    "\x50\x10\xc5\x7f\xde\xdc\x8f\x49\x52\x28\x62\xa1" \
+    "\x8b\x0b\xca\xa2\x22\x6e\xa1\xd8\x88\xad\xad\x62" \
+    "\x69\x2b\x82\x36\x5b\x0a\x76\x76\x76\xf6\x16\xfb" \
+    "\xb0\x50\xb0\x11\xb1\xb0\x11\x04\xb1\x14\x1b\xfd" \
+    "\x07\x16\xb1\x12\x8b\x05\x11\x64\x17\x93\xdc\xe4" \
+    "\x15\x92\xf0\x96\x77\x61\xe0\x0e\xcc\x39\x33\x67" \
+    "\xce\x0c\x01\x34\x9b\xcd\xdd\xa2\x28\xda\xab\xab" \
+    "\xab\xf4\xfb\x7d\xbc\xf7\xe4\x79\x4e\x9e\xe7\xa4" \
+    "\x69\x4a\x51\x14\x55\xae\x94\xa2\xd3\xe9\x20\x22" \
+    "\x7b\x2f\x2f\x2f\x7f\x86\x9a\xcd\xe6\xee\xe2\xe2" \
+    "\x62\xfb\xf0\xf0\x90\x93\x93\x13\x86\x87\x87\x71" \
+    "\xce\x01\x60\xad\x45\x29\x85\xd6\xba\x0a\xe7\x1c" \
+    "\x93\x93\x93\x1c\x1d\x1d\xf1\xf5\xf5\xb5\x37\xb4" \
+    "\xb0\xb0\x50\x5c\x5d\x5d\xb1\xbe\xbe\xce\xdc\xdc" \
+    "\x1c\x22\x82\x31\x86\x30\x0c\x31\xc6\x60\xad\x45" \
+    "\x44\xb0\xd6\x0e\xc4\xfc\xfc\x3c\xfb\xfb\xfb\xe8" \
+    "\x95\x95\x15\x2e\x2f\x2f\x99\x99\x99\x61\x64\x64" \
+    "\x04\x63\x0c\x22\x82\xd6\x1a\x6b\x2d\xce\x39\x8c" \
+    "\x31\x15\x99\x73\x8e\x20\x08\xf8\xfe\xfe\xa6\x56" \
+    "\xab\xa1\x7f\x7e\x7e\x48\xd3\x94\x28\x8a\x30\xc6" \
+    "\x70\x70\x70\x40\xbf\xdf\xe7\xe2\xe2\x62\x00\xbc" \
+    "\xb5\xb5\x45\x92\x24\x3c\x3c\x3c\xe0\x9c\x43\x29" \
+    "\x45\x92\x24\x28\xef\x7d\x35\xae\x88\xa0\x94\x62" \
+    "\x79\x79\x99\x56\xab\x55\x81\xb7\xb7\xb7\x99\x9d" \
+    "\x9d\xad\x9a\x94\x3b\xf2\xde\xa3\xf3\x3c\x07\x20" \
+    "\x0c\x43\xb4\xd6\xb4\xdb\x6d\x5a\xad\x16\x8d\x46" \
+    "\x83\x9d\x9d\x1d\x82\x20\xa0\x5e\xaf\xf3\xfe\xfe" \
+    "\xce\xdd\xdd\x1d\xce\x39\xb4\xd6\x18\x63\xc8\xb2" \
+    "\x0c\x95\xe7\x39\xd6\xda\x01\x8d\x67\x67\x67\xbc" \
+    "\xbd\xbd\x31\x35\x35\x55\x81\x6f\x6e\x6e\xaa\xd1" \
+    "\x4b\x69\xde\x7b\x54\x9a\xa6\x28\xa5\xfe\x5b\x58" \
+    "\x10\x04\x94\xaf\x04\x29\xa5\x10\x11\xc2\x30\xc4" \
+    "\x5a\xfb\x4b\x50\x14\x05\x5a\xeb\xca\xbe\x52\x73" \
+    "\xd9\xf9\xe3\xe3\x83\xf1\xf1\x71\x36\x36\x36\x10" \
+    "\x11\x44\x84\x38\x8e\x07\x25\x94\x96\x95\xdb\xfe" \
+    "\x77\xec\xdb\xdb\x5b\xba\xdd\x2e\x63\x63\x63\xac" \
+    "\xad\xad\x11\x86\x21\x51\x14\xa1\xb5\xfe\x9f\xc0" \
+    "\x5a\x4b\x1c\xc7\xbc\xbe\xbe\x0e\x68\xbe\xbf\xbf" \
+    "\xa7\xdb\xed\xe2\xbd\x27\x8a\xa2\xca\x35\xef\x3d" \
+    "\x5a\x29\x45\x10\x04\x38\xe7\x70\xce\x71\x7d\x7d" \
+    "\x5d\x59\x55\x6a\x16\x11\x9e\x9f\x9f\x89\xa2\x08" \
+    "\x6b\x2d\x51\x14\xd1\xeb\xf5\xc8\xf3\x1c\xdd\xe9" \
+    "\x74\x98\x9e\x9e\xe6\xf3\xf3\x73\x80\xa8\xbc\xfb" \
+    "\x30\x0c\x89\xe3\xb8\xea\x2c\x22\x34\x1a\x0d\x4e" \
+    "\x4f\x4f\xb1\xd6\x12\xd4\xeb\xf5\xf7\xa7\xa7\xa7" \
+    "\x8d\xcd\xcd\x4d\x8c\x31\xd5\xb1\x88\x08\xce\xb9" \
+    "\xdf\xa2\x20\xa0\x28\x0a\xb2\x2c\x23\x8a\x22\x8e" \
+    "\x8f\x8f\x39\x3f\x3f\x67\x62\x62\x62\x6f\x08\x60" \
+    "\x69\x69\x69\xb7\xd7\xeb\xb5\x6b\xb5\x1a\x49\x92" \
+    "\xe0\xbd\x27\xcb\x32\xbc\xf7\xd5\xbf\xcc\xb3\x2c" \
+    "\x43\x44\x18\x1d\x1d\xdd\x7b\x7c\x7c\xfc\xf3\x17" \
+    "\x5b\x09\xfe\xb8\x26\xac\xd9\x84\x00\x00\x00\x00" \
+    "\x49\x45\x4e\x44\xae\x42\x60\x82"
+
+
+
+def send(form):
+    """
+    """
+    gallerygen.TITLE       = unicode(form.name.text()).encode("UTF-8")
+    gallerygen.THUMBWIDTH  = int(form.thumbWidth.text())
+    gallerygen.MAINWIDTH   = int(form.mainWidth.text())
+    gallerygen.QUALITY     = int(form.quality.text())
+    gallerygen.IMAGESINROW = int(form.imagesInRow.text())
+    if form.watermark.isChecked():
+        gallerygen.WATERMARK = True
+    else:
+        gallerygen.WATERMARK = False
+    #endif
+
+    gallerygen.WOPACITY    = float(int(form.wopacity.value()) / 100.0)
+    #gallerygen.INPUTDIR    = "./input"
+    gallerygen.OUTPUTDIR   = form.output.text()
+
+    print "Title:         ", gallerygen.TITLE
+    print "ThumbWidth:    ", gallerygen.THUMBWIDTH
+    print "MainWidth:     ", gallerygen.MAINWIDTH
+    print "Quality:       ", gallerygen.QUALITY
+    print "ImagesInRow:   ", gallerygen.IMAGESINROW
+    print "Watermark:     ", gallerygen.WATERMARK
+    print "WatermarkPath: ", gallerygen.WATERMARKPATH
+    print "WOpacity:      ", gallerygen.WOPACITY
+    print "InputDir:      ", gallerygen.INPUTDIR
+    print "OutputDir:     ", gallerygen.OUTPUTDIR
+
+    form.sendButton.setText("Konvertuji")
+    form.sendButton.setDisabled(True)
+
+    filenames = []
+    for i in range(0, form.filenames.count()):
+        filenames.append(
+            str(form.filenames.text(i)))
+    #endwhile
+
+    gallerygen.main(filenames)
+
+    form.sendButton.setText(u"Konvertovat")
+    form.sendButton.setDisabled(False)
+#enddef
+
+
+class Generator(QMainWindow):
+
+    def __init__(self, files = []):
+        QMainWindow.__init__(self)
+
+        self.showPreview = False
+
+        self.statusBar()
+
+        self.mainWidget = QWidget(self)
+
+        self.image0 = QPixmap()
+        self.image0.loadFromData(image0_data,"PNG")
+        self.image1 = QPixmap()
+        self.image1.loadFromData(image1_data,"PNG")
+        self.image2 = QPixmap()
+        self.image2.loadFromData(image2_data,"PNG")
+
+        self.setName("Generator")
+
+
+        self.setCentralWidget(QWidget(self,"qt_central_widget"))
+
+        self.sendButton = QPushButton(self.centralWidget(),"sendButton")
+        self.sendButton.setGeometry(QRect(470,430,100,23))
+
+        self.labelWatermark = QLabel(self.centralWidget(),"labelWatermark")
+        self.labelWatermark.setGeometry(QRect(30,160,170,20))
+
+        self.labelOpacity = QLabel(self.centralWidget(),"labelOpacity")
+        self.labelOpacity.setGeometry(QRect(30,190,170,20))
+
+        self.labelInput = QLabel(self.centralWidget(),"labelInput")
+        self.labelInput.setGeometry(QRect(30,220,170,20))
+
+        self.labelQuality = QLabel(self.centralWidget(),"labelQuality")
+        self.labelQuality.setGeometry(QRect(30,130,170,20))
+
+        self.labelMainWidth = QLabel(self.centralWidget(),"labelMainWidth")
+        self.labelMainWidth.setGeometry(QRect(60,70,140,20))
+
+        self.groupBox1 = QGroupBox(self.centralWidget(),"groupBox1")
+        self.groupBox1.setGeometry(QRect(20,260,550,150))
+
+        self.filenames = QListBox(self.groupBox1,"filenames")
+        self.filenames.setSelectionMode(QListBox.Extended)
+        self.filenames.setGeometry(QRect(10,20,410,120))
+
+        #self.preview = QToolButton(self.groupBox1,"toolButton3")
+        #self.preview.setGeometry(QRect(430,77,100,21))
+
+
+        if len(files):
+            for f in files:
+                self.filenames.insertItem(gallerygen.INPUTDIR + "/" + f)
+            #endfor
+        #endif
+
+        self.selectFilesButton = QToolButton(self.groupBox1,"selectFilesButton")
+        self.selectFilesButton.setGeometry(QRect(430,21,100,20))
+
+        self.deleteFilesButton = QToolButton(self.groupBox1,"deleteFilesButton")
+        self.deleteFilesButton.setGeometry(QRect(430,50,100,20))
+
+        self.exitButton = QPushButton(self.centralWidget(),"exitButton")
+        self.exitButton.setGeometry(QRect(20,430,100,23))
+
+        self.watermark = QCheckBox(self.centralWidget(),"watermark")
+        self.watermark.setGeometry(QRect(210,160,16,20))
+        self.watermark.setChecked(1)
+
+        self.output = QLineEdit(self.centralWidget(),"output")
+        self.output.setGeometry(QRect(210,220,350,21))
+        self.output.setText(gallerygen.OUTPUTDIR)
+
+        self.thumbWidth = QLineEdit(self.centralWidget(),"thumbWidth")
+        self.thumbWidth.setGeometry(QRect(210,40,60,21))
+        self.thumbWidth.setMaximumSize(QSize(32767,32767))
+        self.thumbWidth.setMaxLength(4)
+
+        self.watermarkPath = QLineEdit(self.centralWidget(),"watermarkPath")
+        self.watermarkPath.setGeometry(QRect(240,160,320,21))
+        self.watermarkPath.setMaximumSize(QSize(32767,32767))
+        self.watermarkPath.setMaxLength(255)
+        self.watermarkPath.setText(QDir.currentDirPath() + "/" + gallerygen.WATERMARKPATH)
+
+        self.pixmapLabel1 = QLabel(self.centralWidget(),"pixmapLabel1")
+        self.pixmapLabel1.setGeometry(QRect(310,40,130,110))
+
+        self.labelImagesInRow = QLabel(self.centralWidget(),"labelImagesInRow")
+        self.labelImagesInRow.setGeometry(QRect(10,100,190,20))
+
+        self.mainWidth = QLineEdit(self.centralWidget(),"mainWidth")
+        self.mainWidth.setGeometry(QRect(210,70,60,21))
+        self.mainWidth.setMaxLength(4)
+
+        self.imagesInRow = QLineEdit(self.centralWidget(),"imagesInRow")
+        self.imagesInRow.setGeometry(QRect(210,100,60,21))
+
+        self.quality = QLineEdit(self.centralWidget(),"quality")
+        self.quality.setGeometry(QRect(210,130,60,21))
+        self.quality.setMaxLength(3)
+
+        self.name = QLineEdit(self.centralWidget(),"name")
+        self.name.setGeometry(QRect(210,10,350,21))
+        self.name.setMaxLength(255)
+
+        self.wopacity = QSlider(self.centralWidget(), "wopacity")
+        self.wopacity.setGeometry(QRect(210,190,230,24))
+        self.wopacity.setMinValue(0)
+        self.wopacity.setLineStep(1)
+        self.wopacity.setPageStep(1)
+        self.wopacity.setValue(40)
+        self.wopacity.setOrientation(QSlider.Horizontal)
+
+        self.labelName = QLabel(self.centralWidget(),"labelName")
+        self.labelName.setGeometry(QRect(110,10,90,20))
+
+        self.labelThumbWidth = QLabel(self.centralWidget(),"labelThumbWidth")
+        self.labelThumbWidth.setGeometry(QRect(50,40,150,20))
+
+        self.px1 = QLabel(self.centralWidget(),"px1")
+        self.px1.setGeometry(QRect(270,40,16,20))
+
+        self.px2 = QLabel(self.centralWidget(),"px2")
+        self.px2.setGeometry(QRect(270,70,16,20))
+
+        self.proc1 = QLabel(self.centralWidget(),"proc1")
+        self.proc1.setGeometry(QRect(270,130,16,20))
+
+        self.proc2 = QLabel(self.centralWidget(),"proc2")
+        self.proc2.setGeometry(QRect(460,190,30,20))
+
+        #self.menuOpen = QAction(self,"menuOpen")
+        #self.menuOpen.setIconSet(QIconSet(self.image0))
+        #self.menuSave = QAction(self,"menuSave")
+        #self.menuSave.setIconSet(QIconSet(self.image1))
+        self.menuClose = QAction(self,"menuClose")
+        self.menuClose.setIconSet(QIconSet(self.image2))
+
+        self.MenuBarEditor = QMenuBar(self,"MenuBarEditor")
+
+        self.Menu = QPopupMenu(self)
+        #self.menuOpen.addTo(self.Menu)
+        #self.menuSave.addTo(self.Menu)
+        self.Menu.insertSeparator()
+        self.menuClose.addTo(self.Menu)
+        self.MenuBarEditor.insertItem(QString(""),self.Menu,1)
+
+        self.languageChange()
+
+        self.resize(QSize(591,502).expandedTo(self.minimumSizeHint()))
+        self.clearWState(Qt.WState_Polished)
+
+        self.connect(self.watermark,SIGNAL("clicked()"),self.selectWatermark)
+        self.connect(self.filenames,SIGNAL("selectionChanged()"),self.filenamesClick)
+        #self.connect(self.preview,SIGNAL("clicked()"),self.previewClick)
+
+        self.connect(self.selectFilesButton,SIGNAL("clicked()"),self.selectFiles)
+        self.connect(self.deleteFilesButton,SIGNAL("clicked()"),self.deleteFiles)
+        self.connect(self.sendButton,SIGNAL("clicked()"),self.send)
+
+        self.connect(self.exitButton,SIGNAL("clicked()"),self.exit_clicked)
+        #self.connect(self.menuOpen,SIGNAL("activated()"),self.menuOpen_activated)
+        #self.connect(self.menuSave,SIGNAL("activated()"),self.menuSave_activated)
+        self.connect(self.menuClose,SIGNAL("activated()"),self.menuClose_activated)
+
+        self.connect(self.wopacity,SIGNAL("sliderMoved(int)"),self.sliderMoved)
+    #enddef
+
+    def languageChange(self):
+        self.setCaption(u"Generátor HTML galerií")
+        self.sendButton.setText(self.__tr("Konvertovat"))
+        self.labelWatermark.setText(u"<p align=\"right\">Přidat watermark:</p>")
+        self.labelOpacity.setText(u"<p align=\"right\">Opacity watermarku:</p>")
+        self.labelInput.setText(u"<p align=\"right\">Výstupní adresář</p>")
+        self.labelQuality.setText(u"<p align=\"right\">Kvalita:</p>")
+        self.labelMainWidth.setText(u"<p align=\"right\">Velikost hlavní fotky:</p>")
+        self.groupBox1.setTitle(u"Soubory pro galerii")
+        self.selectFilesButton.setText(u"Přidat soubory")
+        self.deleteFilesButton.setText(u"Odebrat soubory")
+        self.exitButton.setText(u"Exit")
+        #self.preview.setText(u"Náhledy")
+        self.watermark.setText(QString.null)
+        self.thumbWidth.setText(u"150")
+        self.labelImagesInRow.setText(u"<p align=\"right\">Počet obrázků na jednom řádku:</p>")
+        self.mainWidth.setText(u"800")
+        self.imagesInRow.setText(u"4")
+        self.quality.setText(u"90")
+        QToolTip.add(self.wopacity,QString.null)
+        self.labelName.setText(u"<p align=\"right\">Jméno galerie:</p>")
+        self.labelThumbWidth.setText(u"<p align=\"right\">Velikost náhledové fotky:</p>")
+        self.px1.setText(u"px")
+        self.px2.setText(u"px")
+        self.proc1.setText(u"%")
+        self.proc2.setText(u"40%")
+        #self.menuOpen.setText(self.__trUtf8("\x4f\x74\x65\x76\xc5\x99\xc3\xad\x74"))
+        #self.menuOpen.setMenuText(self.__trUtf8("\x4f\x74\x65\x76\xc5\x99\xc3\xad\x74"))
+        #self.menuSave.setText(self.__trUtf8("\x55\x6c\x6f\xc5\xbe\x69\x74"))
+        #self.menuSave.setMenuText(self.__trUtf8("\x55\x6c\x6f\xc5\xbe\x69\x74"))
+        self.menuClose.setText(self.__trUtf8("\x5a\x61\x76\xc5\x99\xc3\xad\x74"))
+        self.menuClose.setMenuText(self.__trUtf8("\x5a\x61\x76\xc5\x99\xc3\xad\x74"))
+        if self.MenuBarEditor.findItem(1):
+            self.MenuBarEditor.findItem(1).setText(self.__tr("Menu"))
+        #endif
+    #enddef
+
+    def selectFiles(self):
+        filenames = QFileDialog.getOpenFileNames(
+            u"Obrázky (*.jpg *.JPG)", QDir.currentDirPath())
+        for f in filenames:
+            self.filenames.insertItem(f)
+        #endfor
+    #enddef
+
+    def deleteFiles(self):
+        filenames = []
+        for i in range(0, self.filenames.count()):
+            if not self.filenames.isSelected(i):
+                filenames.append(str(self.filenames.text(i)))
+            #endif
+        #endwhile
+        self.filenames.clear()
+        for item in filenames:
+            self.filenames.insertItem(item)
+        #endfor
+    #enddef
+
+    def selectWatermark(self):
+        if self.watermark.isChecked():
+            self.watermarkPath.setEnabled(True)
+        else:
+            self.watermarkPath.setDisabled(True)
+        #endif
+    #enddfe
+
+    def filenamesClick(self):
+        if not self.showPreview:
+            return
+        #endif
+
+        for i in range(0, self.filenames.count()):
+            if not self.filenames.isSelected(i):
+                f = str(self.filenames.text(i))
+                break
+            #endif
+        #endwhile
+        print f
+
+        image = Image.open(f)
+        i = image.resize((200, 150), Image.ANTIALIAS)
+
+        data = StringIO()
+        i.save(data, "JPEG")
+        data.seek(0)
+
+        pi = QPixmap()
+        pi.loadFromData(data.read())
+        self.pixmapLabel1.setPixmap(pi)
+    #enddef
+
+    def previewClick(self):
+        if self.showPreview:
+            self.showPreview = False
+            self.preview.setText(u"Náhledy")
+        else:
+            self.showPreview = True
+            self.preview.setText(u"Vypnout")
+        #endif
+    #enddf
+
+    def send(self):
+        send(self)
+    #enddef
+
+    def exit_clicked(self):
+        self.close()
+    #enddef
+
+    def menuOpen_activated(self):
+        print "Generator.menuOpen_activated(): Not implemented yet"
+    #enddef
+
+    def menuSave_activated(self):
+        print "Generator.menuSave_activated(): Not implemented yet"
+    #enddef
+
+    def menuClose_activated(self):
+        self.close()
+    #enddef
+
+    def sliderMoved(self, value):
+        self.proc2.setText(str(value) + "%")
+    #enddef
+
+    def __tr(self,s,c = None):
+        return qApp.translate("Generator",s,c)
+    #enddef
+
+    def __trUtf8(self,s,c = None):
+        return qApp.translate("Generator",s,c,QApplication.UnicodeUTF8)
+    #enddef
+
+#endclass
+
+if __name__ == "__main__":
+    try:
+        files  = os.listdir(gallerygen.INPUTDIR)
+        files.sort()
+    except OSError, e:
+        files = []
+    #endtry
+
+    app = QApplication(sys.argv)
+    f = Generator(files)
+    f.show()
+    app.setMainWidget(f)
+    app.exec_loop()
+#endif
